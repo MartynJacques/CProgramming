@@ -8,10 +8,10 @@ int TAB_STOPS = 4;
 
 int main() {
   int c;
-  int char_count = 0;
+  int char_count = 1;
   while ((c = getchar()) != EOF) {
-    int next_tab_stop = 4 - (char_count % TAB_STOPS);
-    if (c == '\t') {
+    int next_tab_stop = TAB_STOPS - (char_count % TAB_STOPS);
+    if (c == '\t' && char_count % TAB_STOPS != 0) {
       for (int i = 0; i < next_tab_stop; i++) {
         putchar(' ');
       }
