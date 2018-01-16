@@ -1,0 +1,14 @@
+To get last whitespace, we need to iterate over the whole buffer because when
+we copy, we only keep track of new characters being added to the buffer,
+and the last whitespace may in fact live in the copied part.
+
+When looking for last whitespace, if it's at the start of the line, we just
+want to print the whole line, or else we'll get an empty line, so just
+loop until the second to last char.
+
+When we see a newline, we want to print the whole line, but don't print the
+new line character or esle we'll get two new lines
+
+A tab stop occurs when position % TAB_STOP == 0, so when expanding a tab,
+continue adding spaces until that's true, OR if we hit the end of the line,
+then lets break on this, so print the buffer, and start from the beginning
