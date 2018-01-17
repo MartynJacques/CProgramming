@@ -1,0 +1,2 @@
+- Putting ++ before the variable increments it before it's used
+https://www.daniweb.com/programming/software-development/threads/123205/using-before-after-a-variable

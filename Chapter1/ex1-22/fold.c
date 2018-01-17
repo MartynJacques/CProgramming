@@ -1,57 +1,77 @@
 #include <stdio.h>
 
-#define MAXLINE 1000   /* maximum input line length */
-#define LINESTOP 10    /* line length */
+#define LINELENGTH 12
+#define TABLENGTH 4
 
-int line[LINESTOP];
+int buffer[LINELENGTH];
 
-int resetline(int position) {
-  if (position == -1) {
-    return 0;
+int last_whitespace()
+{
+  int last_ws = LINELENGTH;
+  for (int i = LINELENGTH-1; i > 0; i--) {
+    if (buffer[i] == ' ') {
+      return i;
+    }
   }
-  position = position + 1; // copy after the whitespace
-  int j = 0;
-  for (int i = position; i < LINESTOP; i++) {
-    line[j] = line[i];
-    ++j;
-  }
-  return j;
+  return last_ws;
 }
 
-void printline(int position) {
-  if (position == -1) {
-    position = LINESTOP;
-  }
-
+void printline(int position)
+{
   for (int i = 0; i < position; i++) {
-    putchar(line[i]);
+    putchar(buffer[i]);
   }
   putchar('\n');
 }
 
+int reset_buffer(int from, int to)
+{
+  int j = 0;
+  for (int i = from; i < to; i++) {
+    buffer[j] = buffer[i];
+    j++;
+  }
+  return j;
+}
+
+int expand_tab(int pos_in_b)
+{
+  buffer[pos_in_b] = ' ';
+  ++pos_in_b;
+  while (pos_in_b < LINELENGTH & pos_in_b % TABLENGTH != 0) {
+    buffer[pos_in_b] = ' ';
+    ++pos_in_b;
+  }
+  if (pos_in_b == LINELENGTH) {
+    // We are at end of line, print it
+    printline(pos_in_b);
+    return 0;
+  }
+  return pos_in_b;
+}
+
 int main()
 {
-    int position = 0;
-    int c;
-    int last_ws = -1;
-    while ((c = getchar()) != EOF) {
-      line[position] = c;
+  int c;
+  int pos_in_b = 0;
+  while ((c = getchar()) != EOF) {
 
-      if (c == ' ') {
-        last_ws = position;
-      }
-      ++position;
-
-      if (c == '\n') {
-        printline(position-1);
-        position = 0;
-        last_ws = -1;
-      }
-
-      if (position == LINESTOP) {
-          printline(last_ws);
-          position = resetline(last_ws);
-          last_ws = -1;
-      }
+    if (c == '\t') {
+      pos_in_b = expand_tab(pos_in_b);
+    } else {
+      buffer[pos_in_b] = c;
+      ++pos_in_b;
     }
+
+    if (pos_in_b == LINELENGTH) {
+      // we are at end of buffer, find last whitespace and print until that
+      int last_ws = last_whitespace();
+      printline(last_ws);
+      // copy rest of buffer to beginning of buffer, and continue from there
+      pos_in_b = reset_buffer(last_ws+1, pos_in_b);
+    } else if (c == '\n') {
+      printline(pos_in_b-1);
+      pos_in_b = 0;
+    }
+  }
 }
