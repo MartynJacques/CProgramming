@@ -1,0 +1,2 @@
+At any point the count should not be negative, as this means we've seen a
+closing before an opening, so if we observe this, parentethis are unmatched!
