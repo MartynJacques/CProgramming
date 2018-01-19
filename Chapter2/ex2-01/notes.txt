@@ -1,0 +1,13 @@
+To get the compliment of something the syntax is ~. So to get the maximum value
+for a type, we want the complement of 0 (all bits being 0), which is ~0,
+which fills all the bits allocated to this value with 1. Then print this value.
+
+When something is signed, the first bit is used as the sign, so we lose that
+bit. To get rid of that bit we can mask it off using AND, however, this wont
+work because we don't know how long the bit size of the datatype. We can however,
+shift the bits, which replaces 'empty' bits with 0, so shift right once will
+give us the maximum value of the data type, and the negative value will give us
+the minimum
+
+Have to shift the UNSIGNED version or else an arithmetic shift is performed,
+we want a logical shift, (i.e. the 'empty' bit is replaced by a 0).
