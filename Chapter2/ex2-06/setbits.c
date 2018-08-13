@@ -1,11 +1,13 @@
 #include <stdio.h>
 
-unsigned setbits(unsigned x, int p, int n, unsigned y) {
-  unsigned u = x >> (p-n+1);
-  unsigned t = u | (~0 << n);
-  return y & t;
+unsigned char setbits(unsigned char x, int p, int n, unsigned char y) {
+  return 'Y';
 }
 
-main() {
-  
+int main() {
+  unsigned char x = 0b00000000;
+  unsigned char y = 0b00000111;
+  unsigned char z = setbits(x, 4, 3, y);
+  printf("%i\n" , z);
+  printf("%i\n" , y);
 }
